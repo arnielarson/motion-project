@@ -1,5 +1,5 @@
 #
-# model - Arnie Larson
+# model.R - Arnie Larson
 #
 # for Coursera Machine Learning class
 # https://class.coursera.org/predmachlearn-034

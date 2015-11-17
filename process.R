@@ -4,23 +4,34 @@
 # for Coursera Machine Learning class
 # https://class.coursera.org/predmachlearn-034
 # 
+library(caret)
 
 # processing of training data
 # data is in timeseries windows.  Summary statisitcs (have NA's except whne new_window=T)
-
-# remove summary statistics
-process <- function(data) {
+# assigns global variables to:
+process <- function(data, name="pml") {
+    # remove summary statistics
     data <- data[,!apply(data, 2, function(x) any(is.na(x)))]
 
-    # remove all fields that are super sparse:  (max, kurtosis, skewness yaw 
+    # remove sparse/broken summary statistics: (max, kurtosis, skewness yaw 
     # Note - one field ..  has yaw
-    # These are again summary statistics
     n<-names(data)
     data <- data[,!(grepl("kurtosis",n) | 
         grepl("skewness",n) | 
         grepl("_yaw",n))]
-    return(data)
+
+    data <- data[,-(1:7)]
+    assign(paste0(name,"data"),data, envir=.GlobalEnv)
 }
+
+bifurcate <- function(data, name="pml") {
+    
+    i<-createDataPartition(data$classe,p=.8, list=FALSE)
+    assign(paste0(name,"training"),data[i,], envir=.GlobalEnv)
+    assign(paste0(name,"testing"),data[-i,], envir=.GlobalEnv)
+}
+
+
 
 
 

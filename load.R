@@ -9,7 +9,7 @@
 
 # Load databases if objects not found
 load <- function(test=FALSE) {
-    root<-"~/Documents/Coursera/jhsph/ml/project1/data"
+    root<-"~/Documents/Coursera/jhsph/ml/motion-project/data"
     training_filename <- paste0(root,"/pml-training.csv")
     testing_filename <- paste0(root,"/pml-testing.csv")
 
