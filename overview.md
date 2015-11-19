@@ -41,9 +41,8 @@ The objective is to classify instants in time.  The underlying structure of the 
 To prepare the data, I removed columns that I didn't want to train on and bifurcated the training data into a training and test set.
 I initially trained many models on only about 20% of the data.  
 ```
-source('load.R'); 
 source('process.R');
-load()              # Loads data, creates pml global var
+load_data()              # Loads data, creates pml global var
 process(pml)        # Cuts the data, creates pmldata var
 bifurcate(pmldata, p=0.2)  # partitions training and testing sets
 ````

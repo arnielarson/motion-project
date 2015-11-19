@@ -8,6 +8,7 @@
 #
 # exploratory analysis functions
 # (Assumes global existance of pml data)
+# Note - broken, as I no longeram breaking the data by class {a-e}
 #
 plot_scatter <- function(png_name, var_name, width=1000, height=800) {
     # plots a 5 x n array of the varnames:

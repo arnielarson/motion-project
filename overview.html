@@ -103,9 +103,8 @@ img {
 <div id="basic-modeling-procedure" class="section level4">
 <h4>Basic Modeling Procedure:</h4>
 <p>To prepare the data, I removed columns that I didn’t want to train on and bifurcated the training data into a training and test set. I initially trained many models on only about 20% of the data.</p>
-<pre><code>source('load.R'); 
-source('process.R');
-load()              # Loads data, creates pml global var
+<pre><code>source('process.R');
+load_data()              # Loads data, creates pml global var
 process(pml)        # Cuts the data, creates pmldata var
 bifurcate(pmldata, p=0.2)  # partitions training and testing sets</code></pre>
 <p>Setting up data for modelng, preprocessing. The default caret preprocess behavior is centering and scaling. I also tried using PCA compression. I ultimately set up my preprocessing on the entired data set, in order to get the best scaling and centering parameters.</p>
