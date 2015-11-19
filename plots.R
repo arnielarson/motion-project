@@ -23,6 +23,39 @@ plot_scatter <- function(png_name, var_name, width=1000, height=800) {
     dev.off()
 }
 
+# do a featurePlot on some columns (uses ggplot)
+plot_pair <- function(data, png_name, var_names, width=800, height=600) {
+    if (length(var_names)>8) {
+        print("more than 8 variables..  exiting")
+        return (NULL) 
+    }
+    print(paste("plotting vars:",var_names))
+    fname<-paste("plots/",png_name,"_pairs.png",sep="")
+    png(fname, width=width, height=height)
+    p<-featurePlot(x=data[,var_names],y=data$classe, 
+            plot="pairs", auto.key=list(columns = 5)) 
+    print(p)
+    dev.off()
+    print(paste("created plot: ",fname))
+}
 
+plot_density <- function(data, png_name, var_names, width=800, height=600)  {
+
+    print(paste("plotting vars:",var_names))
+    fname<-paste("plots/",png_name,"_density.png",sep="")
+    png(fname, width=width, height=height)
+    p<-featurePlot(x=data[,var_names],
+            y=data$classe, 
+            plot="density", 
+            scales=list(x=list(relation="free"),
+                        y=list(relation="free")),
+            adjust=1.5, pch="|",
+            layout = c(length(var_names),1),
+            auto.key=list(columns = 5)) 
+    print(p)
+    dev.off()
+    print(paste("created plot: ",fname))
+
+}
 
 

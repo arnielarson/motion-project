@@ -34,4 +34,25 @@ The underlying structure of the time series is in the raw data
 Lots of motion data - a bunch has NAs that Im gonna want to remove, as its NA in the testing set
 data w/ NAs is summary data - shows summary statistics when new_window is "yes"
 
+Basic Modeling Procedure:
+source('load.R'); 
+source('process.R');
+load()              # Loads data, creates pml global var
+process(pml)        # Cuts the data, creates pmldata var
+bifurcate(pmldata, p=0.2)  # partitions training and testing sets
+# setup for modelng:
+#pp<-preProcess(pmltraining)    # default behaivor is to apply centering and scaling
+pp<-preProcess(pmldata)         # should really do this on the entire dataset.. imo 
+# can also add in pca decomposition
+pp2<-preProcess(pmldata, method=c("center","scale","pca"),thresh=.90)
+pmltraint<-predict(pp,pmltraining)  # actually applies the transformation
+
+ctrl=trainControl(method, number, repeats, ..)
+# e.g. trainControl(method="cv",number=5)
+mx <- train(classe ~ ., data=pmltraint, method="x",trControl=ctrl)
+
+ppt<-preProcess(pmltesting)     # default behaivor is to apply centering and scaling
+pmltestingt<-predict(ppt,pmltesting)  # actually applies the transformation
+confusionMatrix(pmltestingt$classe, predict(mx, pmltesting[-53]))
+
 

@@ -24,9 +24,11 @@ process <- function(data, name="pml") {
     assign(paste0(name,"data"),data, envir=.GlobalEnv)
 }
 
-bifurcate <- function(data, name="pml") {
+# split the training set
+bifurcate <- function(data, name="pml", p=0.8) {
     
-    i<-createDataPartition(data$classe,p=.8, list=FALSE)
+    set.seed(100)
+    i<-createDataPartition(data$classe,p=p, list=FALSE)
     assign(paste0(name,"training"),data[i,], envir=.GlobalEnv)
     assign(paste0(name,"testing"),data[-i,], envir=.GlobalEnv)
 }
