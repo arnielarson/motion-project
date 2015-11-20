@@ -4,13 +4,13 @@ Motion Project
 
 #### Author - Arnie Larson
 
-##### Incomplete Draft, based on overview.md
-
 Project is part of a [Coursera](www.coursera.org) [Machine Learning](https://class.coursera.org/predmachlearn-034) class
 
-Date: `r Sys.Date()`
+HTML version available [here](https://arnielarson.github.io/analysis.html)
 
-Taught By: Jeff Leek, Johns Hopkins University
+Coure Taught By: Jeff Leek, Johns Hopkins University
+
+Date: `r Sys.Date()`
 
 #### Introduction
 The goal of this project was to create a predictive model for classification of human motion data.  The data set comes from a Human Activity Recognition [dataset](http://groupware.les.inf.puc-rio.br/har).  The data used is from sensor captures of subjects doing a simple dumbell curl weightlifting exercise.  Each capture is classified into 5 different ways one can *incorrectly* perform the exericse.  For each capture sensors are used to record measurements of the dumbell/arm/waist etc.  The authors used the time series nature of the data in their analysis to classify the motions.  Our evaluation data is for *instants* in time.  Since we do not have the entire timeseries in our evaluation data, the aim is to create a predictive model to classify the data from a single *instant*.
