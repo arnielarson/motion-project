@@ -40,9 +40,9 @@ What's in the Data?  The data for the project includes a larger training set and
 - classe { A -E } - the classification of each motion
 
 
-####  Procedure:
+####  Modeling Procedure
 
-To prepare the data, I removed the columns that I didn't want to train on.  Initially the column summemry statistics and later decided to remove the first 7 columns with user_name, time and windowing informaiton.  
+To prepare the data, I removed the columns that I didn't want to train on.  Initially the column summemry statistics and later decided to remove the first 7 columns with user_name, time and windowing informaiton.  The loading, basic processing and bifurcating routines are in the file process.R.
 ```{r loading, results="hide"}
 source('process.R');
 load_data()              # Loads data, creates pml global var
@@ -52,7 +52,7 @@ process(pml)        # Cuts the data, creates pmldata var
 Let's take a quick look at some of the pmldata variables. 
 
 ```{r basic_data}
-dim(pmldata); str(pmldata[,c(1,2,3,4,5,6,7,8,53)])
+dim(pmldata); summary(pmldata[,c(1,2,3,4,5,6,7,8,53)])
 ```
 
 I found that looking at the covariance matrix gives us a quick and dirty view of the variables in the data set and a feel for the correlations.  The plot indicates that there's some, but pobably not a lot of very correlated data:
@@ -63,7 +63,7 @@ cv <- cov(scale(pmldata[,-53]))  # scale the data before getting the covariance
 levelplot(cv, aspect="iso",  scales=list(x=list(rot=90)))
 ```
 
-It can also be useful to visualize some of the variables with pair plottings.  I did this for several types of variables that might have correlations.  For example the dumbbell accelerations:
+It can also be useful to visualize some of the variables with pair plottings.  I did this for several types of variables that might have correlations.  For example pair plotting the accelerations for the dumbbell:
 
 ```{r pair_plotting, fig.width=8, fig.height=6}
 library(caret)
@@ -78,20 +78,21 @@ There generally appeared to be a lot of overlap for the distinct classes for mos
 
 ```{r pre_process}
 bifurcate(pmldata, p=0.2)     # create training and testing data partitions
-pp<-preProcess(pmldata)       # default behaivor is to apply centering and scaling
+pp<-preProcess(pmldata)       # default behaivor is to do a centering and scaling transformation
 # I also tried using PCA decompositions
 pp2<-preProcess(pmldata, method=c("center","scale","pca"),thresh=.90)
-pmltraint<-predict(pp,pmltraining)  # this actually applies the transformation
+pmltraint<-predict(pp,pmltraining)  # this actually applies the basic centering and scaling transformation to the training data
 ```
 
-My model training routing used the method "cv" which caret uses to do a 5 fold cross validation on the input data to estimate the out of sample error.  Very convenient.
+My model training routing used the caret function train.  In this function a simple formula can be trained using many different learning models.  I used method="rf" to train Random Forest models.  I used "svmLinear", "svnPoly" and "svmRadial" to train Support Vector Machine models.  I tried using "nb" for Naive Bayes models, "glmnet" for a multiclassification logistic regression model, and a few others without luck.  The trainControl function sets up some meta parameters.  It's method "cv" causes a 5 fold cross validation on the input data to estimate the out of sample error.  Very convenient.  
 ```
 ctrl=trainControl(method="cv",number=5)
 mx <- train(classe ~ ., data=pmltraint, method="x",trControl=ctrl)
 ```
-Once a model has been trained, it can be tested on the remaining data.  The caret confusion matrix command is useful to get out of sample accuracy and a truth table with Type I and II errors.  
 
-For example, the model mrf4 is a Random Forest model, trained with method="rf", with 40% of the data, and was found to have an accuracy of a little better than 98%.  
+I focused my efforts on Support Vector Machine and Random Forest models, using 40% of the data, and trying PCA decompositions of the training data.  Once a model is trained, I tested it on the remaining data.  The caret confusion matrix command is useful to get out of sample accuracy and a truth table with Type I and II errors.  
+
+For example, the model mrf4 is a Random Forest model, trained with method="rf", with 40% of the data, and had an accuracy of a little better close to 99%.  
 
 ```{r load_models, include=FALSE}
 load("models/mrf4.rda")
