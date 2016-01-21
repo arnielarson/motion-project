@@ -5,6 +5,8 @@
 
 #####Date: 11/19/2016, updated (12/8/2016)
 
+HTML Version available [here](https://arnielarson.github.io/motion-analysis.html)
+
 #####Project Repository](https://github.com/arnielarson/motion-project)
 --------------
 
